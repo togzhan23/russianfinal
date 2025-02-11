@@ -142,23 +142,23 @@ function displayMap(coordinates) {
   });
 }
 
-function displayToponyms(toponyms) {
+function displayToponyms() {
   const toponymsDiv = document.getElementById('toponyms');
-  toponymsDiv.innerHTML = '<h4>Топонимы</h4>';
-  
-  if (!toponyms || toponyms.length === 0) {
-    toponymsDiv.innerHTML += '<p>Нет данных.</p>';
-    return;
-  }
-
-  const list = document.createElement('ul');
-  toponyms.forEach(toponym => {
-    const listItem = document.createElement('li');
-    listItem.textContent = toponym.name;
-    list.appendChild(listItem);
-  });
-
-  toponymsDiv.appendChild(list);
+  toponymsDiv.innerHTML = `
+    <h4>Типы топонимов Мангистауской области</h4>
+    <ol>
+      <li><strong>Ойконимы (населённые пункты):</strong> Актау, Жанаозен, Бейнеу, Форт-Шевченко.</li>
+      <li><strong>Оронимы (горы, возвышенности):</strong> Шеркала, Айракты, Отпантау.</li>
+      <li><strong>Гидронимы (водоёмы, реки):</strong> Каспийское море, Қошқар-Ата, Өліқолтық.</li>
+      <li><strong>Дромонимы (дороги, улицы):</strong> проспект Абая, улица Назарбаева, Транскаспийский маршрут.</li>
+      <li><strong>Хоронимы (регионы, территории):</strong> Мангистауская область, полуостров Бозашы.</li>
+      <li><strong>Фитонимы (связаны с растительностью):</strong> Жиде (от каз. ‘ива’), Ағаштык (каз. ‘лесная местность’).</li>
+      <li><strong>Зоонимы (связаны с животными):</strong> Қужатқан (каз. ‘место, где водились лебеди’), Бозашы (каз. ‘верблюжий’).</li>
+      <li><strong>Лимнонимы (озёра, болота):</strong> Қаракөл, Ақкөл, Тұзбайыр.</li>
+      <li><strong>Спелеонимы (пещеры, подземные объекты):</strong> Шакпак-Ата (пещерный комплекс), Масат-Ата.</li>
+      <li><strong>Антропотопонимы (названия по именам людей):</strong> Тауке хана (улица), Бекет-Ата (историческое место).</li>
+    </ol>
+  `;
 }
 
 function displayDistricts(districts) {
