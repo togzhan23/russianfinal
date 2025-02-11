@@ -1,11 +1,93 @@
 const API_URL = '/api/city-info';
 
+const cityData = {
+  "Актау": {
+    districts: [
+      "Микрорайон 1", "Микрорайон 2", "Микрорайон 3", "Микрорайон 4", "Микрорайон 5", 
+      "Микрорайон 6", "Микрорайон 7", "Микрорайон 8", "Микрорайон 9", "Микрорайон 10", 
+      "Микрорайон 11", "Микрорайон 12", "Микрорайон 13", "Микрорайон 14", "Микрорайон 15", 
+      "Микрорайон 16", "Микрорайон 17", "Микрорайон 18", "Микрорайон 19", "Микрорайон 20", 
+      "Приморский", "Нурсая"
+    ],
+    streets: [
+      "проспект Тараса Шевченко", "проспект Абая", "проспект Назарбаева", "улица 14", 
+      "улица 17", "улица 27", "улица Шахова", "улица Есет батыра", "улица Мунайлы", 
+      "улица Акбота", "улица Акбулак", "улица Самал", "улица Ботакоз", "улица Жанибека", 
+      "улица Султана Бейбарса", "улица Ханга Батыра", "улица Маншук Маметовой", 
+      "улица 8 марта", "улица Байтерек", "улица Туран", "улица Батыр", "улица Оркен", 
+      "улица Каспийская", "улица Айгерим", "улица Толегенова", "улица Атамекен", 
+      "улица Бауыржана Момышулы", "улица Жамбыла Жабаева"
+    ]
+  },
+  "Жанаозен": {
+    districts: [
+      "Рахат", "Тенге", "Кендерли", "Жалын", "Шанырак", "Мамыр", "Арай", 
+      "Актас", "Жулдыз", "Сарыкамыс", "Бостан", "Коктем", "Самал", "Оркен"
+    ],
+    streets: [
+      "улица Сатпаева", "улица Тауке хана", "проспект Бейбарыса", "улица Алтын Орда", 
+      "улица Толе би", "улица Абай", "улица Конырат", "улица Бейсембаева", 
+      "улица Шокан Уалиханова", "улица Казыбек би", "улица Тулепова", "улица Еркебулан", 
+      "улица Шахманова", "улица Караганда", "улица Айтеке би", "улица Мунайшылар", 
+      "улица Актау", "улица Кенесары хана", "улица Достык", "улица Батыс", 
+      "улица Алтын Орда", "улица Арман"
+    ]
+  },
+  "Форт-Шевченко": {
+    districts: [
+      "Центр", "Прибрежный", "Курортный", "Северный", "Южный", "Западный", "Восточный", 
+      "Атамекен", "Жана Кала", "Жигер", "Ак Булак", "Байтерек", "Оркен", "Бозжыра"
+    ],
+    streets: [
+      "улица Достык", "улица Абая", "улица Актюбинская", "улица Нурлы Жол", 
+      "улица Алтын Орда", "улица Мунайшылар", "улица Айтеке би", "улица Кенесары хана", 
+      "улица Еркин", "улица Сары Арка", "улица Тулепова", "улица Байконур", 
+      "улица Жибек Жолы", "улица Шокан Уалиханова", "улица Тауке хана", 
+      "улица Бейбарыса", "улица Актас", "улица Арман", "улица Жансугурова", 
+      "улица Ак Кент", "улица Самал", "улица Оркен"
+    ]
+  },
+  "Курык": {
+    districts: [
+      "Старый Курык", "Новый Курык", "Жана Кала", "Береке", "Байтерек", 
+      "Актау", "Оркен", "Астана", "Самал", "Еркин"
+    ],
+    streets: [
+      "улица Атырауская", "улица Казахстан", "улица Темиртау", "улица Бейбарыса", 
+      "улица Тауке хана", "улица Достык", "улица Сары Арка", "улица Жибек Жолы", 
+      "улица Байконур", "улица Мунайшылар", "улица Тулепова", "улица Еркин", 
+      "улица Оркен", "улица Самал", "улица Актас", "улица Арман", 
+      "улица Жансугурова", "улица Ак Кент", "улица Астана"
+    ]
+  },
+  "Бейнеу": {
+    districts:  [
+      "Северный", "Южный", "Центральный", "Жана Кала", "Береке", 
+      "Астана", "Байтерек", "Самал", "Оркен", "Еркин"
+    ],
+    streets: [
+      "улица Байтурсынова", "улица Сейфуллина", "улица Назарбаева", "улица Ауэзова",
+      "улица Абая", "улица Достык", "улица Алтын Орда", "улица Мунайшылар", 
+      "улица Кунаева", "улица Бейбарыса", "улица Тауке хана", "улица Жибек Жолы",
+      "улица Байконур", "улица Сары Арка", "улица Тулепова", "улица Еркин", 
+      "улица Оркен", "улица Самал", "улица Актас", "улица Арман"
+    ]
+  }
+};
+
 async function getCityInfo() {
   const city = document.getElementById('city').value.trim();
-
+  
   if (!city) {
-    alert('Please enter city');
+    alert('Введите город!');
     return;
+  }
+
+  if (cityData[city]) {
+    displayDistricts(cityData[city].districts);
+    displayStreets(cityData[city].streets);
+  } else {
+    alert("Город не найден в базе данных!");
   }
 
   try {
@@ -15,37 +97,35 @@ async function getCityInfo() {
     if (response.ok) {
       displayWeather(data.weather);
       displayMap(data.weather.coordinates);
-      displayResources();
-      displayDistricts();
-      displayStreets();
+      displayToponyms(data.toponyms);
     } else {
-      alert(`Error: ${data.error}`);
+      alert(`Ошибка: ${data.error}`);
     }
   } catch (error) {
-    console.error('Error fetching city info:', error);
-    alert('Failed to fetch city information.');
+    console.error('Ошибка при получении информации о городе:', error);
+    alert('Не удалось получить данные.');
   }
 }
 
 function displayWeather(weather) {
   const weatherDiv = document.getElementById('weather');
   weatherDiv.innerHTML = `
-    <h4>Weather Information</h4>
+    <h4>Погода</h4>
     <img src="${weather.icon}" alt="${weather.description}">
-    <p><strong>Temperature:</strong> ${weather.temperature}°C</p>
-    <p><strong>Feels Like:</strong> ${weather.feels_like}°C</p>
-    <p><strong>Description:</strong> ${weather.description}</p>
-    <p><strong>Humidity:</strong> ${weather.humidity}%</p>
-    <p><strong>Pressure:</strong> ${weather.pressure} hPa</p>
-    <p><strong>Wind Speed:</strong> ${weather.wind_speed} m/s</p>
-    <p><strong>Country:</strong> ${weather.country}</p>
+    <p><strong>Температура:</strong> ${weather.temperature}°C</p>
+    <p><strong>Ощущается как:</strong> ${weather.feels_like}°C</p>
+    <p><strong>Описание:</strong> ${weather.description}</p>
+    <p><strong>Влажность:</strong> ${weather.humidity}%</p>
+    <p><strong>Давление:</strong> ${weather.pressure} hPa</p>
+    <p><strong>Скорость ветра:</strong> ${weather.wind_speed} м/с</p>
+    <p><strong>Страна:</strong> ${weather.country}</p>
   `;
 }
 
 function displayMap(coordinates) {
   if (!coordinates || !coordinates.latitude || !coordinates.longitude) {
-    console.error('Coordinates are missing or invalid:', coordinates);
-    alert('Unable to display map due to missing location data.');
+    console.error('Координаты отсутствуют или некорректны:', coordinates);
+    alert('Невозможно отобразить карту из-за отсутствия данных.');
     return;
   }
 
@@ -58,69 +138,65 @@ function displayMap(coordinates) {
   new google.maps.Marker({
     position: { lat: coordinates.latitude, lng: coordinates.longitude },
     map: map,
-    title: 'City Location',
+    title: 'Расположение города',
   });
 }
 
-function displayResources() {
-  const resourcesDiv = document.getElementById('resources');
-  resourcesDiv.innerHTML = `
-    <ul>
-      <li>Этнонимы: Каспийское море (от этнонима древних каспиев), Шеркала (от каз. "шер" — лев, что связывается с историей кочевых племен).</li>
-      <li>Цвет и оттенки воды: Қаракөл (каз. "чёрное озеро"), Ақкөл (каз. "белое озеро"), Сарыкөл (каз. "жёлтое озеро").</li>
-      <li>Характер течения: Өліқолтық (каз. "мёртвый залив"), Құйлыс (каз. "слияние").</li>
-      <li>Величина, объём: Қошқар-Ата (впадина), Қарасу (каз. "чёрная вода").</li>
-      <li>Обоняние, вкус: Тұзбайыр (каз. "солёный выход"), Тұздыбас (каз. "солёная вершина").</li>
-      <li>Форма русла: Бозашы (извилистые русла), Құланды (каз. "изогнутое").</li>
-      <li>Критерий прозрачности и чистоты: Ақсу (каз. "чистая вода"), Мөлдірсу (каз. "прозрачная вода").</li>
-      <li>Гидронимы-зоонимы: Марқакөл (каз. марқа ‘ягненок’), Текесу (каз. теке ‘козел’).</li>
-      <li>Общая эмоциональная оценка: Зайсан (от монг. сайхан ‘красивый’), Жаманкөл (каз. ‘плохое озеро’).</li>
-      <li>Характер грунта: Балқаш (каз. ‘болотистая местность’), Тассуат (каз. ‘каменистый водопой’).</li>
-    </ul>
-  `;
+function displayToponyms(toponyms) {
+  const toponymsDiv = document.getElementById('toponyms');
+  toponymsDiv.innerHTML = '<h4>Топонимы</h4>';
+  
+  if (!toponyms || toponyms.length === 0) {
+    toponymsDiv.innerHTML += '<p>Нет данных.</p>';
+    return;
+  }
+
+  const list = document.createElement('ul');
+  toponyms.forEach(toponym => {
+    const listItem = document.createElement('li');
+    listItem.textContent = toponym.name;
+    list.appendChild(listItem);
+  });
+
+  toponymsDiv.appendChild(list);
 }
 
-function displayDistricts() {
-  const districtsDiv = document.getElementById('districts');
-  districtsDiv.innerHTML = `
-    <ul>
-      <li>город Актау</li>
-      <li>Бейнеуский р-н: Акжигит, Бейнеу, Жангельдин, Ногайты, Опорный, Сарша, Сынгырлау, Турыш, Устюрт</li>
-      <li>Каракиянский р-н: Аккудук, Бекет-Ата, Жетыбай, Курык, Мунайши, Сенек</li>
-      <li>Мангистауская обл: город Жанаозен</li>
-      <li>Мангистауский р-н: Жармыш, Кызан, Онды, Сайотес, Тущикудук, Уштаган, Шаир, Шетпе</li>
-      <li>Тупкараганский р-н: Акшукур, Баутино, Каражанбас, Кзыл-Озен, Таучик, Форт-Шевченко</li>
-    </ul>
-  `;
+function displayDistricts(districts) {
+  const districtsDiv = document.getElementById("districts");
+  districtsDiv.innerHTML = "<h4>Районы</h4>";
+
+  if (!districts || districts.length === 0) {
+    districtsDiv.innerHTML += "<p>Нет данных.</p>";
+    return;
+  }
+
+  const list = document.createElement("ul");
+  districts.forEach(district => {
+    const listItem = document.createElement("li");
+    listItem.textContent = district;
+    list.appendChild(listItem);
+  });
+
+  districtsDiv.appendChild(list);
 }
 
-function displayStreets() {
-  const streetsDiv = document.getElementById('streets');
-  streetsDiv.innerHTML = `
-    <ul>
-      <li>мкр.1: Дома: Т/Ц "Карагоз", Почтовый индекс: 130001</li>
-      <li>мкр.14: Дома: Б/Ц "Звезда Актау", Почтовый индекс: 130000</li>
-      <li>мкр.2: Дома: 11 а, 11 б, 47 а, 47 б, 47 в, Почтовый индекс: 130001</li>
-      <li>мкр.22: Дома: 10/6, 5 а, 5 в, 7/б, Почтовый индекс: 130001</li>
-      <li>мкр.23: Почтовый индекс: 130001</li>
-      <li>мкр.24: Почтовый индекс: 130003</li>
-      <li>мкр.26: Дома: дом 45, кв 5/6, Почтовый индекс: 130003</li>
-      <li>мкр.27: Почтовый индекс: 130003</li>
-      <li>мкр.28: Почтовый индекс: 130003</li>
-      <li>мкр.28а: Почтовый индекс: 130003</li>
-      <li>мкр.29: Почтовый индекс: 130003</li>
-      <li>мкр.3: Дома: 146 а, 154 а, 158 а, 32 а, Почтовый индекс: 130001</li>
-      <li>мкр.3а: Почтовый индекс: 130001</li>
-      <li>мкр.4: Почтовый индекс: 130001</li>
-      <li>мкр.5: Дома: здание 15, ТЦ Волна, Почтовый индекс: 130001</li>
-      <li>мкр.6: Почтовый индекс: 130002</li>
-      <li>мкр.7: Почтовый индекс: 130002</li>
-      <li>мкр.8: Почтовый индекс: 130002</li>
-      <li>Новый приозерный: Почтовый индекс: 130001</li>
-      <li>Приозерный: Почтовый индекс: 130001</li>
-    </ul>
-  `;
-}
+function displayStreets(streets) {
+  const streetsDiv = document.getElementById("streets");
+  streetsDiv.innerHTML = "<h4>Улицы</h4>";
 
+  if (!streets || streets.length === 0) {
+    streetsDiv.innerHTML += "<p>Нет данных.</p>";
+    return;
+  }
+
+  const list = document.createElement("ul");
+  streets.forEach(street => {
+    const listItem = document.createElement("li");
+    listItem.textContent = street;
+    list.appendChild(listItem);
+  });
+
+  streetsDiv.appendChild(list);
+}
 
 document.getElementById('get-info-btn').addEventListener('click', getCityInfo);
