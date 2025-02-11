@@ -7,8 +7,7 @@ const PORT = 3000;
 
 // API keys
 const OPENWEATHER_API_KEY = '5384d72851af6871743325b81870e7be';
-
-
+const NOMINATIM_API_URL = 'https://nominatim.openstreetmap.org/search';
 
 // Middleware
 app.use(express.json());
@@ -48,9 +47,23 @@ app.get('/api/city-info', async (req, res) => {
       },
     };
 
+    // Nominatim API for Toponyms
+    const nominatimResponse = await axios.get(NOMINATIM_API_URL, {
+      params: {
+        q: city,
+        format: 'json',
+        addressdetails: 1,
+        limit: 10,
+      },
+    });
     
+    const toponyms = nominatimResponse.data.map(place => ({
+      name: place.display_name,
+      latitude: place.lat,
+      longitude: place.lon,
+    }));
 
-    res.json({ weather});
+    res.json({ weather, toponyms });
   } catch (error) {
     console.error('Error fetching data:', error.message);
     res.status(500).json({ error: 'Failed to fetch data from APIs.' });
